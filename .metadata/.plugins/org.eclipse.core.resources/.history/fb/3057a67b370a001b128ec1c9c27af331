@@ -1,0 +1,32 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class MazeLayout {
+
+	public MazeLayout(String fileName) {
+		String fileContents = null;
+		  try{
+			   fileContents = new String(Files.readAllBytes(Paths.get(fileName)));
+			   //String[] splitLines = fileContents.split("\\r?\\n");
+			   //List<String> list = new ArrayList<String>(Arrays.asList(splitLines));
+			   //columns = splitLines[0].split(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)");
+			   //list.remove(0);
+			   //splitLines = list.toArray(new String[0]);
+			   //for(String line : splitLines) {
+				   //String[] cells = line.split(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)");
+			
+			  //}
+			  /*Catch statements for common issues*/
+			  } catch (IOException e) {
+			   e.printStackTrace();
+			  } catch (NumberFormatException e) {
+				   e.printStackTrace();
+			  }	catch (NullPointerException e) {
+				   e.printStackTrace();
+			  }			
+	}
+
+}

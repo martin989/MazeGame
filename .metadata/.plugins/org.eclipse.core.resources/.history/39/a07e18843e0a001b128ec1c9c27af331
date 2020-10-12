@@ -1,0 +1,44 @@
+import java.awt.EventQueue;
+import java.io.IOException;
+
+import javax.swing.JFrame;
+
+
+public class MainUI {
+
+	private JFrame frame;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainUI window = new MainUI();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public MainUI() throws IOException {
+		initialize();
+		MazeLayout mazelayout = new MazeLayout("C:\\Users\\erinm\\Desktop\\Martin School\\SENG-300 Fall 2020\\A6 Project\\MazeGame\\src\\MazeTemplate.xlsx");
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+}

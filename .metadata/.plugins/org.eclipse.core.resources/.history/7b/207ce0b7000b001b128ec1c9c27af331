@@ -1,0 +1,18 @@
+/**
+ * 
+ */
+
+/**
+ * @author Erin
+ *
+ */
+public class MazeSpace {
+
+	/**
+	 * 
+	 */
+	public MazeSpace() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

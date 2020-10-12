@@ -1,0 +1,102 @@
+/**
+ * 
+ */
+
+/**
+ * @author Martin Kucharek
+ *
+ */
+public class MazeSpace {
+	/**
+	 * 
+	 */
+	private Boolean openSpace;
+	private Boolean wallSpace;
+	private Boolean endSpace;
+	private Boolean startSpace;
+	private Boolean alreadyTried;
+	
+	/**
+	 * spaceType = (0 for blocked, 1 for able to walk through)
+	 */
+	public MazeSpace(Boolean spaceType, Boolean start, Boolean end) {
+		this.alreadyTried = false;
+		if(start || end) {
+			this.wallSpace = false;
+			this.openSpace = false;
+		}else if(spaceType == true){
+			this.openSpace = true;
+			this.wallSpace = false;
+		}else {
+			this.wallSpace = true;
+			this.openSpace = false;
+		}
+	}
+
+
+	/**
+	 * @return the openSpace
+	 */
+	public Boolean getOpenSpace() {
+		return openSpace;
+	}
+
+
+	/**
+	 * @param openSpace the openSpace to set
+	 */
+	public void setOpenSpace(Boolean openSpace) {
+		this.openSpace = openSpace;
+	}
+
+
+	/**
+	 * @return the wallSpace
+	 */
+	public Boolean getWallSpace() {
+		return wallSpace;
+	}
+
+
+	/**
+	 * @param wallSpace the wallSpace to set
+	 */
+	public void setWallSpace(Boolean wallSpace) {
+		this.wallSpace = wallSpace;
+	}
+
+
+	/**
+	 * @return the endSpace
+	 */
+	public Boolean getEndSpace() {
+		return endSpace;
+	}
+
+
+	/**
+	 * @param endSpace the endSpace to set
+	 */
+	public void setEndSpace(Boolean endSpace) {
+		this.endSpace = endSpace;
+	}
+
+
+	/**
+	 * @return the startSpace
+	 */
+	public Boolean getStartSpace() {
+		return startSpace;
+	}
+
+
+	/**
+	 * @param startSpace the startSpace to set
+	 */
+	public void setStartSpace(Boolean startSpace) {
+		this.startSpace = startSpace;
+	}
+	
+	
+
+}

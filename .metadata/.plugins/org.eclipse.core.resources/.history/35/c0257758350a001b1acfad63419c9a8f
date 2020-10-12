@@ -1,0 +1,8 @@
+
+public class MazeLayout {
+
+	public MazeLayout() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

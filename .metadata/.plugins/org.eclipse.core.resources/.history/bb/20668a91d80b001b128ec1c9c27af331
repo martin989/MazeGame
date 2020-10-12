@@ -1,0 +1,42 @@
+import java.awt.EventQueue;
+
+/**
+ * 
+ */
+
+/**
+ * @author Erin
+ *
+ */
+public class Main {
+
+	
+	private static UIMain window;
+	private static Game game;
+	/**
+	 * 
+	 */
+	public Main() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						game = new Game();
+						game.CreateMaze();
+						window = new UIMain();
+						window.frame.setVisible(true);
+						window.UpdateGameBoard(game.getRows(), game.getCols());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+	}
+
+}

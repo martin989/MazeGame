@@ -1,0 +1,171 @@
+import java.util.Stack;
+
+public class Game {
+
+	public Game() {
+		// TODO Auto-generated constructor stub
+	}
+	private int cols;
+	private int rows;
+	private static MazeSpace[][] mazeSpaces = new MazeSpace[0][0];
+	private static Stack<MazeSpace> trackingStack = new Stack<MazeSpace>(); 
+	private UIMain uimain;
+	/**
+	 * Creates the maze
+	 * (0 for blocked, 1 for able to walk through, 2 for start, and 3 for end)
+	 * 
+	 * Returns the maze 2d int array
+	 */		
+	public void CreateMaze() {
+		int[][] maze = new int[][] {
+				{0, 2, 1, 0, 0}, 
+				{0, 0, 1, 1, 0},
+				{1, 1, 1, 0, 0}, 
+				{1, 0, 1, 0, 0}, 
+				{1, 0, 3, 0, 0}
+			   };
+	    mazeSpaces = new MazeSpace[maze.length][maze[0].length];
+		for (int i = 0; i < maze.length; i++) {
+			for (int j = 0; j < maze[0].length; j++) {
+				mazeSpaces[i][j] = new MazeSpace(maze[i][j],i,j);
+			}
+		}   	
+		cols = maze.length;
+		rows = maze[0].length;
+	}
+	
+	/**
+	 * Finds start and end point
+	 * 
+	 * Returns xy in an array
+	 */
+	public static int[][] FindStartEndPoint(MazeSpace[][] maze){
+		int[][] xy = {
+				{0,0},
+				{0,0}
+				};
+		for (int i = 0; i < maze.length; i++) {
+			for (int j = 0; j < maze[0].length; j++) {
+				if(maze[i][j].getStartSpace() == true) {
+					 xy[0][1]= i;
+					 xy[0][0]= j;
+				}else if(maze[i][j].getEndSpace() == true) {
+					 xy[1][1]= i;
+					 xy[1][0]= j;
+				}
+			}
+		}                      	
+		return xy;
+	}
+
+	
+	/**
+	 * Solves the maze
+	 * 
+	 *  Returns the solved results (true for solved, false for not solved)
+	 * 
+	 */
+	public static Boolean SolveMaze() {
+		int[][] startEndPoint = FindStartEndPoint(mazeSpaces);
+		int incrX = startEndPoint[0][0];
+		int incrY = startEndPoint[0][1];
+		int prevX = -1;
+		int prevY = -1;
+		int startX = startEndPoint[0][0];
+		int startY = startEndPoint[0][1];
+		int endX = startEndPoint[1][0];
+		int endY = startEndPoint[1][1];
+		mazeSpaces[incrY][incrX].setAlreadyTried(true);
+		
+		//Move around board to find end
+		while(true) {
+			//Check to see if solved already
+			if(incrX == endX && incrY == endY) {
+				return true;
+			}
+			if(prevX == incrX && prevY == incrY) {
+				if(trackingStack.isEmpty() != true) {
+					MazeSpace backTrack =  trackingStack.pop();
+					incrX = backTrack.getX();
+					incrY = backTrack.getY();
+				}
+			}else {
+				prevX = incrX;
+				prevY = incrY;
+			}
+			//Look Up
+			if(incrY != 0) {
+				if(mazeSpaces[incrY - 1][incrX].getWallSpace() != true && mazeSpaces[incrY - 1][incrX].getAlreadyTried() != true) {
+					incrY -= 1;
+					mazeSpaces[incrY][incrX].setAlreadyTried(true);
+					trackingStack.push(mazeSpaces[incrY][incrX]);
+				}
+			}
+			//Look Down
+			if(incrY != (mazeSpaces.length-1)) {
+				if(mazeSpaces[incrY + 1][incrX].getWallSpace() != true && mazeSpaces[incrY + 1][incrX].getAlreadyTried() != true) {
+					incrY += 1;
+					mazeSpaces[incrY][incrX].setAlreadyTried(true);
+					trackingStack.push(mazeSpaces[incrY][incrX]);
+				}
+			}
+			//Look Left
+			if(incrX != 0) {
+				if(mazeSpaces[incrY][incrX - 1].getWallSpace() != true && mazeSpaces[incrY][incrX - 1].getAlreadyTried() != true) {
+					incrX -= 1;
+					mazeSpaces[incrY][incrX].setAlreadyTried(true);
+					trackingStack.push(mazeSpaces[incrY][incrX]);
+				}
+			}
+			//Look Right
+			if(incrX != (mazeSpaces[0].length-1)) {
+				if(mazeSpaces[incrY][incrX + 1].getWallSpace() != true && mazeSpaces[incrY][incrX + 1].getAlreadyTried() != true) {
+					incrX += 1;
+					mazeSpaces[incrY][incrX].setAlreadyTried(true);
+					trackingStack.push(mazeSpaces[incrY][incrX]);
+				}
+			}	
+			
+			//Check to see if nothing left to move
+			if(incrX == startX && incrY == startY && trackingStack.isEmpty()) {
+				return false;
+			}
+		}	
+	}
+	
+
+	/**
+	 * @return the cols
+	 */
+	public int getCols() {
+		return cols;
+	}
+
+	/**
+	 * @param cols the cols to set
+	 */
+	public void setCols(int cols) {
+		cols = cols;
+	}
+
+	/**
+	 * @return the rows
+	 */
+	public int getRows() {
+		return rows;
+	}
+
+	/**
+	 * @param rows the rows to set
+	 */
+	public void setRows(int rows) {
+		rows = rows;
+	}
+
+	/**
+	 * @return the mazeSpaces
+	 */
+	public static MazeSpace[][] getMazeSpaces() {
+		return mazeSpaces;
+	}
+}

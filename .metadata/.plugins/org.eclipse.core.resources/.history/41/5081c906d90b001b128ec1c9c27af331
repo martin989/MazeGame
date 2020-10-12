@@ -1,0 +1,114 @@
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Panel;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JSplitPane;
+import javax.swing.JButton;
+
+public class UIMain {
+
+	static JFrame frame;
+	private static JPanel panelGame;
+	private static Game mainGame;
+
+	/**
+	 * Create the application.
+	 */
+	public UIMain() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private static void initialize() {
+		frame = new JFrame();
+		frame.setBounds(150, 150, 600, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JSplitPane splitPane = new JSplitPane();
+		splitPane.setResizeWeight(0.2);
+		frame.getContentPane().add(splitPane);
+		
+		panelGame = new JPanel();
+		panelGame.setPreferredSize(new Dimension(400, 400));
+		splitPane.setRightComponent(panelGame);
+		panelGame.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JPanel panelControls = new JPanel();
+		splitPane.setLeftComponent(panelControls);
+		panelControls.setLayout(new GridLayout(3, 0, 0, 0));
+		
+		JButton btnSolve = new JButton("Solve");
+		panelControls.add(btnSolve);
+		
+		JButton btnCreateGame = new JButton("Create New Game");
+		panelControls.add(btnCreateGame);
+		
+		JButton btnReloadGame = new JButton("Reload Game");
+		panelControls.add(btnReloadGame);
+	}
+	
+
+	public void MoveGame(int[] oldLocation, int[] newLocation) {
+		MazeSpace[][] maze = mainGame.getMazeSpaces();
+		JButton buttons = (JButton) panelGame.getComponentAt(oldLocation[0],oldLocation[1]);
+	}
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	public void UpdateGameBoard(int rows, int cols) {
+		panelGame.setLayout(new GridLayout(rows, cols, 0, 0));
+		MazeSpace[][] maze = mainGame.getMazeSpaces();
+		JButton[][] buttons = new JButton[rows][cols];
+		for (int i = 0; i < cols; i++) {
+			for (int j = 0; j < rows; j++) {
+				buttons[i][j] = new JButton();
+				if(maze[i][j].getWallSpace()) {
+					buttons[i][j].setBackground(Color.red);
+				}else if(maze[i][j].getOpenSpace()) {
+					buttons[i][j].setBackground(Color.white);
+				}else if(maze[i][j].getStartSpace()) {
+					buttons[i][j].setBackground(Color.green);
+				}else if(maze[i][j].getEndSpace()) {
+					buttons[i][j].setBackground(Color.blue);
+				}else {
+					buttons[i][j].setBackground(Color.black);
+				}
+				panelGame.add(buttons[i][j]).setLocation(i, j);
+			}
+		}   
+		
+	}
+	
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						initialize();
+						mainGame = new Game();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+	}
+	/**
+	 * @param args
+	 */
+
+}
