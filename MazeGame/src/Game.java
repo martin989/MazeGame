@@ -42,15 +42,15 @@ public class Game {
 			Workbook workbook = createXLSFile(fileName);
 			Sheet sheet = workbook.getSheet("Sheet1");
 			int rowCount = sheet.getLastRowNum()-sheet.getFirstRowNum();
-			Row row = sheet.getRow(1);
-			int[][] maze = new int[rowCount+1][row.getLastCellNum()];
-			cols = row.getLastCellNum();
+			//Row row = sheet.getRow(1);
+			int[][] maze = new int[rowCount+1][sheet.getRow(1).getLastCellNum()];
+			cols = sheet.getRow(1).getLastCellNum();
 			rows = rowCount + 1;
 			for (int i = 0; i < rowCount+1; i++) {
-				row = sheet.getRow(i);
-				for (int j = 0; j < row.getLastCellNum(); j++) {
+				//row = sheet.getRow(i);
+				for (int j = 0; j < sheet.getRow(1).getLastCellNum(); j++) {
 					final DataFormatter df = new DataFormatter();
-					final Cell cell = row.getCell(j);
+					final Cell cell = sheet.getRow(i).getCell(j);
 					String valueAsString = df.formatCellValue(cell);
 					maze[i][j] = Integer.parseInt(valueAsString);
 				}
