@@ -13,14 +13,9 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Game {
-	/**
-	 * Variables
-	 */
-	private int cols;
-	private int rows;
 	private static MazeSpace[][] mazeSpaces = new MazeSpace[0][0];
 	private static Stack<MazeSpace> trackingStack = new Stack<MazeSpace>(); 
-	private int[][] startEndPoint;
+	private GameData data = new GameData();
 	private static int incrX;
 	private static int incrY;
 	private static int prevX;
@@ -30,6 +25,22 @@ public class Game {
 	private static int endX;
 	private static int endY;
 	
+	
+	/**
+	 * Initialize the maze variables (could of just called new in the reload and create buttons)
+	 */
+	public void InitializeMaze() {
+		data.startEndPoint = FindStartEndPoint(mazeSpaces);
+		incrX = data.startEndPoint[0][0];
+		incrY = data.startEndPoint[0][1];
+		prevX = -1;
+		prevY = -1;
+		startX = data.startEndPoint[0][0];
+		startY = data.startEndPoint[0][1];
+		endX = data.startEndPoint[1][0];
+		endY = data.startEndPoint[1][1];
+		mazeSpaces[incrY][incrX].setAlreadyTried(true);
+	}
 	
 	/**
 	 * Creates the maze
@@ -42,12 +53,10 @@ public class Game {
 			Workbook workbook = createXLSFile(fileName);
 			Sheet sheet = workbook.getSheet("Sheet1");
 			int rowCount = sheet.getLastRowNum()-sheet.getFirstRowNum();
-			//Row row = sheet.getRow(1);
 			int[][] maze = new int[rowCount+1][sheet.getRow(1).getLastCellNum()];
-			cols = sheet.getRow(1).getLastCellNum();
-			rows = rowCount + 1;
+			data.cols = sheet.getRow(1).getLastCellNum();
+			data.rows = rowCount + 1;
 			for (int i = 0; i < rowCount+1; i++) {
-				//row = sheet.getRow(i);
 				for (int j = 0; j < sheet.getRow(1).getLastCellNum(); j++) {
 					final DataFormatter df = new DataFormatter();
 					final Cell cell = sheet.getRow(i).getCell(j);
@@ -104,23 +113,6 @@ public class Game {
 			}
 		}                      	
 		return xy;
-	}
-
-	
-	/**
-	 * Initialize the maze variables (could of just called new in the reload and create buttons)
-	 */
-	public void InitializeMaze() {
-		startEndPoint = FindStartEndPoint(mazeSpaces);
-		incrX = startEndPoint[0][0];
-		incrY = startEndPoint[0][1];
-		prevX = -1;
-		prevY = -1;
-		startX = startEndPoint[0][0];
-		startY = startEndPoint[0][1];
-		endX = startEndPoint[1][0];
-		endY = startEndPoint[1][1];
-		mazeSpaces[incrY][incrX].setAlreadyTried(true);
 	}
 
 	
@@ -255,7 +247,7 @@ public class Game {
 	 * @return the cols
 	 */
 	public int getCols() {
-		return cols;
+		return data.cols;
 	}
 
 	/**
@@ -269,7 +261,7 @@ public class Game {
 	 * @return the rows
 	 */
 	public int getRows() {
-		return rows;
+		return data.rows;
 	}
 
 	/**
