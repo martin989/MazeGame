@@ -26,9 +26,6 @@ public class Game {
 	private static int endY;
 	
 	
-	/**
-	 * Initialize the maze variables (could of just called new in the reload and create buttons)
-	 */
 	public void InitializeMaze() {
 		data.startEndPoint = FindStartEndPoint(mazeSpaces);
 		incrX = data.startEndPoint[0][0];
@@ -42,12 +39,6 @@ public class Game {
 		mazeSpaces[incrY][incrX].setAlreadyTried(true);
 	}
 	
-	/**
-	 * Creates the maze
-	 * (0 for blocked, 1 for able to walk through, 2 for start, and 3 for end)
-	 * 
-	 * Returns the maze 2d int array
-	 */		
 	public void CreateMaze(String fileName) {
 		try {
 			Workbook workbook = createXLSFile(fileName);
@@ -90,12 +81,6 @@ public class Game {
 		return workbook;
 	}
 	
-
-	/**
-	 * Finds start and end point
-	 * 
-	 * Returns xy in an array
-	 */
 	public static int[][] FindStartEndPoint(MazeSpace[][] maze){
 		int[][] xy = {
 				{0,0},
@@ -116,12 +101,6 @@ public class Game {
 	}
 
 	
-	/**
-	 * Solves the maze
-	 * 
-	 *  Returns the solved results (0 for not solvable, 1 for still solving, 2 for solved, 3 for back tracking)
-	 * 
-	 */
 	public static int SolveMaze() {
 			//Check to see if solved already
 			if(incrX == endX && incrY == endY) {
