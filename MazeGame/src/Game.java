@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Stack;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -38,16 +39,7 @@ public class Game {
 	 */		
 	public void CreateMaze(String fileName) {
 		try {
-			String filePath = System.getProperty("user.dir")+"\\src";
-			File file =    new File(filePath+"\\"+fileName);
-			FileInputStream inputStream = new FileInputStream(file);
-			Workbook workbook = null;
-			String fileExtensionName = fileName.substring(fileName.indexOf("."));
-			if(fileExtensionName.equals(".xlsx")){
-				workbook = new XSSFWorkbook(inputStream);
-			}else if(fileExtensionName.equals(".xls")){
-				workbook = new HSSFWorkbook(inputStream);
-			}
+			Workbook workbook = createXLSFile(fileName);
 			Sheet sheet = workbook.getSheet("Sheet1");
 			int rowCount = sheet.getLastRowNum()-sheet.getFirstRowNum();
 			Row row = sheet.getRow(1);
@@ -72,6 +64,21 @@ public class Game {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	private Workbook createXLSFile(String fileName) throws FileNotFoundException, IOException {
+		String filePath = System.getProperty("user.dir")+"\\src";
+		File file =    new File(filePath+"\\"+fileName);
+		FileInputStream inputStream = new FileInputStream(file);
+		Workbook workbook = null;
+		String fileExtensionName = fileName.substring(fileName.indexOf("."));
+		if(fileExtensionName.equals(".xlsx")){
+			workbook = new XSSFWorkbook(inputStream);
+		}else if(fileExtensionName.equals(".xls")){
+			workbook = new HSSFWorkbook(inputStream);
+		}
+		return workbook;
 	}
 	
 
