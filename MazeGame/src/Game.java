@@ -41,7 +41,7 @@ public class Game {
 	
 	public void CreateMaze(String fileName) {
 		try {
-			Workbook workbook = createXLSFile(fileName);
+			Workbook workbook = File.createXLSFile(fileName);
 			Sheet sheet = workbook.getSheet("Sheet1");
 			int rowCount = sheet.getLastRowNum()-sheet.getFirstRowNum();
 			int[][] maze = new int[rowCount+1][sheet.getRow(1).getLastCellNum()];
@@ -64,21 +64,6 @@ public class Game {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-
-	private Workbook createXLSFile(String fileName) throws FileNotFoundException, IOException {
-		String filePath = System.getProperty("user.dir")+"\\src";
-		File file =    new File(filePath+"\\"+fileName);
-		FileInputStream inputStream = new FileInputStream(file);
-		Workbook workbook = null;
-		String fileExtensionName = fileName.substring(fileName.indexOf("."));
-		if(fileExtensionName.equals(".xlsx")){
-			workbook = new XSSFWorkbook(inputStream);
-		}else if(fileExtensionName.equals(".xls")){
-			workbook = new HSSFWorkbook(inputStream);
-		}
-		return workbook;
 	}
 	
 	public static int[][] FindStartEndPoint(MazeSpace[][] maze){
@@ -121,9 +106,7 @@ public class Game {
 			if(incrY != 0) {
 				if(mazeSpaces[incrY - 1][incrX].getWallSpace() != true && mazeSpaces[incrY - 1][incrX].getAlreadyTried() != true) {
 					incrY -= 1;
-					mazeSpaces[incrY][incrX].setAlreadyTried(true);
-					trackingStack.push(mazeSpaces[incrY][incrX]);
-					return 1;
+					return updateSpace();
 				}
 			}
 			//Look Down
@@ -139,18 +122,14 @@ public class Game {
 			if(incrX != 0) {
 				if(mazeSpaces[incrY][incrX - 1].getWallSpace() != true && mazeSpaces[incrY][incrX - 1].getAlreadyTried() != true) {
 					incrX -= 1;
-					mazeSpaces[incrY][incrX].setAlreadyTried(true);
-					trackingStack.push(mazeSpaces[incrY][incrX]);
-					return 1;
+					return updateSpace();
 				}
 			}
 			//Look Right
 			if(incrX != (mazeSpaces[0].length-1)) {
 				if(mazeSpaces[incrY][incrX + 1].getWallSpace() != true && mazeSpaces[incrY][incrX + 1].getAlreadyTried() != true) {
 					incrX += 1;
-					mazeSpaces[incrY][incrX].setAlreadyTried(true);
-					trackingStack.push(mazeSpaces[incrY][incrX]);
-					return 1;
+					return updateSpace();
 				}
 			}	
 			
@@ -165,7 +144,12 @@ public class Game {
 			return 1;	
 	}
 	
-
+	private Boolean updateSpace() {
+		mazeSpaces[incrY][incrX].setAlreadyTried(true);
+		trackingStack.push(mazeSpaces[incrY][incrX]);
+		return true;
+	}
+	
 	/**
 	 * @return the prevX
 	 */
